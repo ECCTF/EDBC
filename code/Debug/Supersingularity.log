@@ -1,0 +1,237 @@
+﻿  scalarMultiplication.cpp
+  preComputation.cpp
+  pointOperationAtomicity.cpp
+  pointOperation.cpp
+  main.cpp
+g:\文章\2025\eurocrypt\fullversionandcode\supersingularitytestingcode\code\main.cpp(329): warning C4244: “=”: 从“__int64”转换到“int”，可能丢失数据
+g:\文章\2025\eurocrypt\fullversionandcode\supersingularitytestingcode\code\main.cpp(332): warning C4244: “=”: 从“__int64”转换到“int”，可能丢失数据
+g:\文章\2025\eurocrypt\fullversionandcode\supersingularitytestingcode\code\main.cpp(463): warning C4244: “=”: 从“__int64”转换到“int”，可能丢失数据
+g:\文章\2025\eurocrypt\fullversionandcode\supersingularitytestingcode\code\main.cpp(467): warning C4244: “=”: 从“__int64”转换到“int”，可能丢失数据
+g:\文章\2025\eurocrypt\fullversionandcode\supersingularitytestingcode\code\main.cpp(482): warning C4129: “%”: 不可识别的字符转义序列
+g:\文章\2025\eurocrypt\fullversionandcode\supersingularitytestingcode\code\main.cpp(298): warning C4101: “Item0”: 未引用的局部变量
+  doublebasechain.cpp
+g:\文章\2025\eurocrypt\fullversionandcode\supersingularitytestingcode\code\doublebasechain.cpp(848): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+g:\文章\2025\eurocrypt\fullversionandcode\supersingularitytestingcode\code\doublebasechain.cpp(873): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+g:\文章\2025\eurocrypt\fullversionandcode\supersingularitytestingcode\code\doublebasechain.cpp(892): warning C4244: “初始化”: 从“__int64”转换到“int”，可能丢失数据
+g:\文章\2025\eurocrypt\fullversionandcode\supersingularitytestingcode\code\doublebasechain.cpp(894): warning C4244: “初始化”: 从“__int64”转换到“int”，可能丢失数据
+g:\文章\2025\eurocrypt\fullversionandcode\supersingularitytestingcode\code\doublebasechain.cpp(897): warning C4244: “初始化”: 从“__int64”转换到“int”，可能丢失数据
+g:\文章\2025\eurocrypt\fullversionandcode\supersingularitytestingcode\code\doublebasechain.cpp(898): warning C4244: “初始化”: 从“__int64”转换到“int”，可能丢失数据
+g:\文章\2025\eurocrypt\fullversionandcode\supersingularitytestingcode\code\doublebasechain.cpp(1199): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+g:\文章\2025\eurocrypt\fullversionandcode\supersingularitytestingcode\code\doublebasechain.cpp(1202): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+g:\文章\2025\eurocrypt\fullversionandcode\supersingularitytestingcode\code\doublebasechain.cpp(810): warning C4101: “DBCmiddle”: 未引用的局部变量
+g:\文章\2025\eurocrypt\fullversionandcode\supersingularitytestingcode\code\doublebasechain.cpp(933): warning C4101: “reducedYMiddle”: 未引用的局部变量
+g:\文章\2025\eurocrypt\fullversionandcode\supersingularitytestingcode\code\doublebasechain.cpp(933): warning C4101: “reducedXMiddle”: 未引用的局部变量
+  big.cpp
+  正在生成代码...
+g:\文章\2025\eurocrypt\fullversionandcode\supersingularitytestingcode\code\scalarmultiplication.cpp(1553): warning C4700: 使用了未初始化的局部变量“P2”
+big.obj : warning LNK4075: 忽略“/EDITANDCONTINUE”(由于“/SAFESEH”规范)
+big.obj : error LNK2019: 无法解析的外部符号 _mr_lent，该符号在函数 "int __cdecl length(class Big const &)" (?length@@YAHABVBig@@@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _mr_and，该符号在函数 "class Big __cdecl land(class Big const &,class Big const &)" (?land@@YA?AVBig@@ABV1@0@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _mr_shift，该符号在函数 "class std::basic_ostream<char,struct std::char_traits<char> > & __cdecl otfloat(class std::basic_ostream<char,struct std::char_traits<char> > &,class Big const &,int)" (?otfloat@@YAAAV?$basic_ostream@DU?$char_traits@D@std@@@std@@AAV12@ABVBig@@H@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _mr_alloc，该符号在函数 "void __cdecl multi_inverse(int,class Big *,class Big const &,class Big *)" (?multi_inverse@@YAXHPAVBig@@ABV1@0@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _mr_free，该符号在函数 "public: __thiscall Big::~Big(void)" (??1Big@@QAE@XZ) 中被引用
+doublebasechain.obj : error LNK2001: 无法解析的外部符号 _mr_free
+main.obj : error LNK2001: 无法解析的外部符号 _mr_free
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _mr_free
+big.obj : error LNK2019: 无法解析的外部符号 _mr_window，该符号在函数 "int __cdecl window(class Big const &,int,int *,int *,int)" (?window@@YAHABVBig@@HPAH1H@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _mr_naf_window，该符号在函数 "int __cdecl naf_window(class Big const &,class Big const &,int,int *,int *,int)" (?naf_window@@YAHABVBig@@0HPAH1H@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _zero，该符号在函数 "class std::basic_istream<char,struct std::char_traits<char> > & __cdecl operator>>(class std::basic_istream<char,struct std::char_traits<char> > &,class Big &)" (??5@YAAAV?$basic_istream@DU?$char_traits@D@std@@@std@@AAV01@AAVBig@@@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _convert，该符号在函数 "class std::basic_ostream<char,struct std::char_traits<char> > & __cdecl otfloat(class std::basic_ostream<char,struct std::char_traits<char> > &,class Big const &,int)" (?otfloat@@YAAAV?$basic_ostream@DU?$char_traits@D@std@@@std@@AAV12@ABVBig@@H@Z) 中被引用
+doublebasechain.obj : error LNK2001: 无法解析的外部符号 _convert
+main.obj : error LNK2001: 无法解析的外部符号 _convert
+pointOperationAtomicity.obj : error LNK2001: 无法解析的外部符号 _mirvar
+preComputation.obj : error LNK2001: 无法解析的外部符号 _mirvar
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _mirvar
+big.obj : error LNK2001: 无法解析的外部符号 _mirvar
+doublebasechain.obj : error LNK2001: 无法解析的外部符号 _mirvar
+main.obj : error LNK2001: 无法解析的外部符号 _mirvar
+pointOperation.obj : error LNK2001: 无法解析的外部符号 _mirvar
+big.obj : error LNK2019: 无法解析的外部符号 _get_mip，该符号在函数 "class std::basic_istream<char,struct std::char_traits<char> > & __cdecl operator>>(class std::basic_istream<char,struct std::char_traits<char> > &,class Big &)" (??5@YAAAV?$basic_istream@DU?$char_traits@D@std@@@std@@AAV01@AAVBig@@@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _numdig，该符号在函数 "public: int __thiscall Big::len(void)const " (?len@Big@@QBEHXZ) 中被引用
+pointOperationAtomicity.obj : error LNK2001: 无法解析的外部符号 _copy
+preComputation.obj : error LNK2001: 无法解析的外部符号 _copy
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _copy
+big.obj : error LNK2001: 无法解析的外部符号 _copy
+doublebasechain.obj : error LNK2001: 无法解析的外部符号 _copy
+main.obj : error LNK2001: 无法解析的外部符号 _copy
+pointOperation.obj : error LNK2001: 无法解析的外部符号 _copy
+big.obj : error LNK2019: 无法解析的外部符号 _negify，该符号在函数 "class Big __cdecl operator-(class Big const &)" (??G@YA?AVBig@@ABV0@@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _absol，该符号在函数 "class Big __cdecl abs(class Big const &)" (?abs@@YA?AVBig@@ABV1@@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _size，该符号在函数 "public: int __thiscall Big::isone(void)const " (?isone@Big@@QBEHXZ) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _add，该符号在函数 "class Big __cdecl operator+(class Big const &,class Big const &)" (??H@YA?AVBig@@ABV0@0@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _subtract，该符号在函数 "class Big __cdecl operator-(class Big const &,class Big const &)" (??G@YA?AVBig@@ABV0@0@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _incr，该符号在函数 "class Big __cdecl operator+(class Big const &,int)" (??H@YA?AVBig@@ABV0@H@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _decr，该符号在函数 "class Big __cdecl operator-(class Big const &,int)" (??G@YA?AVBig@@ABV0@H@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _premult，该符号在函数 "class Big __cdecl operator*(class Big const &,int)" (??D@YA?AVBig@@ABV0@H@Z) 中被引用
+doublebasechain.obj : error LNK2001: 无法解析的外部符号 _premult
+big.obj : error LNK2019: 无法解析的外部符号 _subdiv，该符号在函数 "class Big __cdecl operator/(class Big const &,int)" (??K@YA?AVBig@@ABV0@H@Z) 中被引用
+doublebasechain.obj : error LNK2001: 无法解析的外部符号 _subdiv
+big.obj : error LNK2019: 无法解析的外部符号 _bytes_to_big，该符号在函数 "class Big __cdecl from_binary(int,char *)" (?from_binary@@YA?AVBig@@HPAD@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _big_to_bytes，该符号在函数 "int __cdecl to_binary(class Big const &,int,char *,int)" (?to_binary@@YAHABVBig@@HPADH@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _normalise，该符号在函数 "class Big __cdecl norm(class Big const &)" (?norm@@YA?AVBig@@ABV1@@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _multiply，该符号在函数 "class Big __cdecl operator*(class Big const &,class Big const &)" (??D@YA?AVBig@@ABV0@0@Z) 中被引用
+doublebasechain.obj : error LNK2001: 无法解析的外部符号 _multiply
+big.obj : error LNK2019: 无法解析的外部符号 _fastmultop，该符号在函数 "int __cdecl fmt(int,class Big const &,class Big const &,class Big &)" (?fmt@@YAHHABVBig@@0AAV1@@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _divide，该符号在函数 "class Big __cdecl operator/(class Big const &,class Big const &)" (??K@YA?AVBig@@ABV0@0@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _mad，该符号在函数 "class Big __cdecl mad(class Big const &,class Big const &,class Big const &,class Big const &,class Big &)" (?mad@@YA?AVBig@@ABV1@000AAV1@@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _cinstr，该符号在函数 "class std::basic_istream<char,struct std::char_traits<char> > & __cdecl operator>>(class std::basic_istream<char,struct std::char_traits<char> > &,class Big &)" (??5@YAAAV?$basic_istream@DU?$char_traits@D@std@@@std@@AAV01@AAVBig@@@Z) 中被引用
+main.obj : error LNK2001: 无法解析的外部符号 _cinstr
+big.obj : error LNK2019: 无法解析的外部符号 _cotstr，该符号在函数 "class std::basic_ostream<char,struct std::char_traits<char> > & __cdecl operator<<(class std::basic_ostream<char,struct std::char_traits<char> > &,class Big const &)" (??6@YAAAV?$basic_ostream@DU?$char_traits@D@std@@@std@@AAV01@ABVBig@@@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _egcd，该符号在函数 "class Big __cdecl gcd(class Big const &,class Big const &)" (?gcd@@YA?AVBig@@ABV1@0@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _xgcd，该符号在函数 "class Big __cdecl inverse(class Big const &,class Big const &)" (?inverse@@YA?AVBig@@ABV1@0@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _bigbits，该符号在函数 "class Big __cdecl randbits(int)" (?randbits@@YA?AVBig@@H@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _expint，该符号在函数 "class Big __cdecl pow(class Big const &,int)" (?pow@@YA?AVBig@@ABV1@H@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _sftbit，该符号在函数 "class Big __cdecl operator>>(class Big const &,int)" (??5@YA?AVBig@@ABV0@H@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _power，该符号在函数 "class Big __cdecl pow(class Big const &,int,class Big const &)" (?pow@@YA?AVBig@@ABV1@H0@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _powmod，该符号在函数 "class Big __cdecl pow(class Big const &,class Big const &,class Big const &)" (?pow@@YA?AVBig@@ABV1@00@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _powmod2，该符号在函数 "class Big __cdecl pow(class Big const &,class Big const &,class Big const &,class Big const &,class Big const &)" (?pow@@YA?AVBig@@ABV1@0000@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _powmodn，该符号在函数 "class Big __cdecl pow(int,class Big *,class Big *,class Big)" (?pow@@YA?AVBig@@HPAV1@0V1@@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _powltr，该符号在函数 "class Big __cdecl pow(int,class Big const &,class Big const &)" (?pow@@YA?AVBig@@HABV1@0@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _multi_inverse，该符号在函数 "void __cdecl multi_inverse(int,class Big *,class Big const &,class Big *)" (?multi_inverse@@YAXHPAVBig@@ABV1@0@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _lucas，该符号在函数 "class Big __cdecl luc(class Big const &,class Big const &,class Big const &,class Big *)" (?luc@@YA?AVBig@@ABV1@00PAV1@@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _nroot，该符号在函数 "int __cdecl perfect_power(class Big const &)" (?perfect_power@@YAHABVBig@@@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _sqroot，该符号在函数 "class Big __cdecl sqrt(class Big const &,class Big const &)" (?sqrt@@YA?AVBig@@ABV1@0@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _bigrand，该符号在函数 "class Big __cdecl rand(class Big const &)" (?rand@@YA?AVBig@@ABV1@@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _bigdig，该符号在函数 "class Big __cdecl rand(int,int)" (?rand@@YA?AVBig@@HH@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _trial_division，该符号在函数 "int __cdecl small_factors(class Big const &)" (?small_factors@@YAHABVBig@@@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _nxprime，该符号在函数 "class Big __cdecl nextprime(class Big const &)" (?nextprime@@YA?AVBig@@ABV1@@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _nxsafeprime，该符号在函数 "class Big __cdecl nextsafeprime(int,int,class Big const &)" (?nextsafeprime@@YA?AVBig@@HHABV1@@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _prepare_monty，该符号在函数 "void __cdecl modulo(class Big const &)" (?modulo@@YAXABVBig@@@Z) 中被引用
+main.obj : error LNK2001: 无法解析的外部符号 _prepare_monty
+big.obj : error LNK2019: 无法解析的外部符号 _nres，该符号在函数 "class Big __cdecl nres(class Big const &)" (?nres@@YA?AVBig@@ABV1@@Z) 中被引用
+main.obj : error LNK2001: 无法解析的外部符号 _nres
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _nres
+big.obj : error LNK2019: 无法解析的外部符号 _redc，该符号在函数 "class Big __cdecl redc(class Big const &)" (?redc@@YA?AVBig@@ABV1@@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _strong_bigrand，该符号在函数 "class Big __cdecl strong_rand(struct csprng *,class Big const &)" (?strong_rand@@YA?AVBig@@PAUcsprng@@ABV1@@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _strong_bigdig，该符号在函数 "class Big __cdecl strong_rand(struct csprng *,int,int)" (?strong_rand@@YA?AVBig@@PAUcsprng@@HH@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _mr_jsf，该符号在函数 "void __cdecl jsf(class Big const &,class Big const &,class Big &,class Big &,class Big &,class Big &)" (?jsf@@YAXABVBig@@0AAV1@111@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _ecurve_init，该符号在函数 "void __cdecl ecurve(class Big const &,class Big const &,class Big const &,int)" (?ecurve@@YAXABVBig@@00H@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _ecurve2_init，该符号在函数 "int __cdecl ecurve2(int,int,int,int,class Big const &,class Big const &,int,int)" (?ecurve2@@YAHHHHHABVBig@@0HH@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _mround，该符号在函数 "class std::basic_ostream<char,struct std::char_traits<char> > & __cdecl otfloat(class std::basic_ostream<char,struct std::char_traits<char> > &,class Big const &,int)" (?otfloat@@YAAAV?$basic_ostream@DU?$char_traits@D@std@@@std@@AAV12@ABVBig@@H@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _fmul，该符号在函数 "class std::basic_ostream<char,struct std::char_traits<char> > & __cdecl otfloat(class std::basic_ostream<char,struct std::char_traits<char> > &,class Big const &,int)" (?otfloat@@YAAAV?$basic_ostream@DU?$char_traits@D@std@@@std@@AAV12@ABVBig@@H@Z) 中被引用
+big.obj : error LNK2019: 无法解析的外部符号 _fdiv，该符号在函数 "class std::basic_ostream<char,struct std::char_traits<char> > & __cdecl otfloat(class std::basic_ostream<char,struct std::char_traits<char> > &,class Big const &,int)" (?otfloat@@YAAAV?$basic_ostream@DU?$char_traits@D@std@@@std@@AAV12@ABVBig@@H@Z) 中被引用
+doublebasechain.obj : error LNK2019: 无法解析的外部符号 _mr_compare，该符号在函数 "int __cdecl operator==(class Big const &,class Big const &)" (??8@YAHABVBig@@0@Z) 中被引用
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _mr_compare
+doublebasechain.obj : error LNK2019: 无法解析的外部符号 _logb2，该符号在函数 "struct DBC __cdecl DynamicProgrammingDBC(class Big,struct DBC (* const)[200][14],struct DBCChainItem * const,double,double,double,double,__int64 &)" (?DynamicProgrammingDBC@@YA?AUDBC@@VBig@@QAY1MI@O@U1@QAUDBCChainItem@@NNNNAA_J@Z) 中被引用
+main.obj : error LNK2019: 无法解析的外部符号 _mirsys，该符号在函数 _main 中被引用
+pointOperation.obj : error LNK2019: 无法解析的外部符号 _nres_negate，该符号在函数 "int __cdecl DIKNegative(struct extProjectPoint,struct extProjectPoint &)" (?DIKNegative@@YAHUextProjectPoint@@AAU1@@Z) 中被引用
+pointOperationAtomicity.obj : error LNK2001: 无法解析的外部符号 _nres_negate
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _nres_negate
+pointOperation.obj : error LNK2019: 无法解析的外部符号 _nres_modadd，该符号在函数 "int __cdecl DIKAddition(struct extProjectPoint,struct extProjectPoint,struct extProjectPoint &)" (?DIKAddition@@YAHUextProjectPoint@@0AAU1@@Z) 中被引用
+pointOperationAtomicity.obj : error LNK2001: 无法解析的外部符号 _nres_modadd
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _nres_modadd
+pointOperation.obj : error LNK2019: 无法解析的外部符号 _nres_modsub，该符号在函数 "int __cdecl DIKAddition(struct extProjectPoint,struct extProjectPoint,struct extProjectPoint &)" (?DIKAddition@@YAHUextProjectPoint@@0AAU1@@Z) 中被引用
+pointOperationAtomicity.obj : error LNK2001: 无法解析的外部符号 _nres_modsub
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _nres_modsub
+pointOperation.obj : error LNK2019: 无法解析的外部符号 _nres_modmult，该符号在函数 "int __cdecl DIKAddition(struct extProjectPoint,struct extProjectPoint,struct extProjectPoint &)" (?DIKAddition@@YAHUextProjectPoint@@0AAU1@@Z) 中被引用
+pointOperationAtomicity.obj : error LNK2001: 无法解析的外部符号 _nres_modmult
+preComputation.obj : error LNK2001: 无法解析的外部符号 _nres_modmult
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _nres_modmult
+scalarMultiplication.obj : error LNK2019: 无法解析的外部符号 _nres_moddiv，该符号在函数 "int __cdecl scalarMultiplicationAd(struct affinePoint,struct affinePoint &,int *,int,int)" (?scalarMultiplicationAd@@YAHUaffinePoint@@AAU1@PAHHH@Z) 中被引用
+  LINK : 找到 MSIL .netmodule 或使用 /GL 编译的模块；正在使用 /LTCG 重新启动链接；将 /LTCG 添加到链接命令行以改进链接器性能
+LINK : warning LNK4075: 忽略“/INCREMENTAL”(由于“/LTCG”规范)
+big.obj : warning LNK4075: 忽略“/EDITANDCONTINUE”(由于“/OPT:LBR”规范)
+big.obj : error LNK2001: 无法解析的外部符号 _mr_lent
+big.obj : error LNK2001: 无法解析的外部符号 _mr_and
+big.obj : error LNK2001: 无法解析的外部符号 _mr_shift
+big.obj : error LNK2001: 无法解析的外部符号 _mr_alloc
+big.obj : error LNK2001: 无法解析的外部符号 _mr_free
+doublebasechain.obj : error LNK2001: 无法解析的外部符号 _mr_free
+main.obj : error LNK2001: 无法解析的外部符号 _mr_free
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _mr_free
+big.obj : error LNK2001: 无法解析的外部符号 _mr_window
+big.obj : error LNK2001: 无法解析的外部符号 _mr_naf_window
+big.obj : error LNK2001: 无法解析的外部符号 _zero
+big.obj : error LNK2001: 无法解析的外部符号 _convert
+doublebasechain.obj : error LNK2001: 无法解析的外部符号 _convert
+main.obj : error LNK2001: 无法解析的外部符号 _convert
+pointOperationAtomicity.obj : error LNK2001: 无法解析的外部符号 _mirvar
+preComputation.obj : error LNK2001: 无法解析的外部符号 _mirvar
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _mirvar
+big.obj : error LNK2001: 无法解析的外部符号 _mirvar
+doublebasechain.obj : error LNK2001: 无法解析的外部符号 _mirvar
+main.obj : error LNK2001: 无法解析的外部符号 _mirvar
+pointOperation.obj : error LNK2001: 无法解析的外部符号 _mirvar
+big.obj : error LNK2001: 无法解析的外部符号 _get_mip
+big.obj : error LNK2001: 无法解析的外部符号 _numdig
+pointOperationAtomicity.obj : error LNK2001: 无法解析的外部符号 _copy
+preComputation.obj : error LNK2001: 无法解析的外部符号 _copy
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _copy
+big.obj : error LNK2001: 无法解析的外部符号 _copy
+doublebasechain.obj : error LNK2001: 无法解析的外部符号 _copy
+main.obj : error LNK2001: 无法解析的外部符号 _copy
+pointOperation.obj : error LNK2001: 无法解析的外部符号 _copy
+big.obj : error LNK2001: 无法解析的外部符号 _negify
+big.obj : error LNK2001: 无法解析的外部符号 _absol
+big.obj : error LNK2001: 无法解析的外部符号 _size
+big.obj : error LNK2001: 无法解析的外部符号 _add
+big.obj : error LNK2001: 无法解析的外部符号 _subtract
+big.obj : error LNK2001: 无法解析的外部符号 _incr
+big.obj : error LNK2001: 无法解析的外部符号 _decr
+big.obj : error LNK2001: 无法解析的外部符号 _premult
+doublebasechain.obj : error LNK2001: 无法解析的外部符号 _premult
+big.obj : error LNK2001: 无法解析的外部符号 _subdiv
+doublebasechain.obj : error LNK2001: 无法解析的外部符号 _subdiv
+big.obj : error LNK2001: 无法解析的外部符号 _bytes_to_big
+big.obj : error LNK2001: 无法解析的外部符号 _big_to_bytes
+big.obj : error LNK2001: 无法解析的外部符号 _normalise
+big.obj : error LNK2001: 无法解析的外部符号 _multiply
+doublebasechain.obj : error LNK2001: 无法解析的外部符号 _multiply
+big.obj : error LNK2001: 无法解析的外部符号 _fastmultop
+big.obj : error LNK2001: 无法解析的外部符号 _divide
+big.obj : error LNK2001: 无法解析的外部符号 _mad
+big.obj : error LNK2001: 无法解析的外部符号 _cinstr
+main.obj : error LNK2001: 无法解析的外部符号 _cinstr
+big.obj : error LNK2001: 无法解析的外部符号 _cotstr
+big.obj : error LNK2001: 无法解析的外部符号 _egcd
+big.obj : error LNK2001: 无法解析的外部符号 _xgcd
+big.obj : error LNK2001: 无法解析的外部符号 _bigbits
+big.obj : error LNK2001: 无法解析的外部符号 _expint
+big.obj : error LNK2001: 无法解析的外部符号 _sftbit
+big.obj : error LNK2001: 无法解析的外部符号 _power
+big.obj : error LNK2001: 无法解析的外部符号 _powmod
+big.obj : error LNK2001: 无法解析的外部符号 _powmod2
+big.obj : error LNK2001: 无法解析的外部符号 _powmodn
+big.obj : error LNK2001: 无法解析的外部符号 _powltr
+big.obj : error LNK2001: 无法解析的外部符号 _multi_inverse
+big.obj : error LNK2001: 无法解析的外部符号 _lucas
+big.obj : error LNK2001: 无法解析的外部符号 _nroot
+big.obj : error LNK2001: 无法解析的外部符号 _sqroot
+big.obj : error LNK2001: 无法解析的外部符号 _bigrand
+big.obj : error LNK2001: 无法解析的外部符号 _bigdig
+big.obj : error LNK2001: 无法解析的外部符号 _trial_division
+big.obj : error LNK2001: 无法解析的外部符号 _nxprime
+big.obj : error LNK2001: 无法解析的外部符号 _nxsafeprime
+big.obj : error LNK2001: 无法解析的外部符号 _prepare_monty
+main.obj : error LNK2001: 无法解析的外部符号 _prepare_monty
+big.obj : error LNK2001: 无法解析的外部符号 _nres
+main.obj : error LNK2001: 无法解析的外部符号 _nres
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _nres
+big.obj : error LNK2001: 无法解析的外部符号 _redc
+big.obj : error LNK2001: 无法解析的外部符号 _strong_bigrand
+big.obj : error LNK2001: 无法解析的外部符号 _strong_bigdig
+big.obj : error LNK2001: 无法解析的外部符号 _mr_jsf
+big.obj : error LNK2001: 无法解析的外部符号 _ecurve_init
+big.obj : error LNK2001: 无法解析的外部符号 _ecurve2_init
+big.obj : error LNK2001: 无法解析的外部符号 _mround
+big.obj : error LNK2001: 无法解析的外部符号 _fmul
+big.obj : error LNK2001: 无法解析的外部符号 _fdiv
+doublebasechain.obj : error LNK2001: 无法解析的外部符号 _mr_compare
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _mr_compare
+doublebasechain.obj : error LNK2001: 无法解析的外部符号 _logb2
+main.obj : error LNK2001: 无法解析的外部符号 _mirsys
+pointOperation.obj : error LNK2001: 无法解析的外部符号 _nres_negate
+pointOperationAtomicity.obj : error LNK2001: 无法解析的外部符号 _nres_negate
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _nres_negate
+pointOperation.obj : error LNK2001: 无法解析的外部符号 _nres_modadd
+pointOperationAtomicity.obj : error LNK2001: 无法解析的外部符号 _nres_modadd
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _nres_modadd
+pointOperation.obj : error LNK2001: 无法解析的外部符号 _nres_modsub
+pointOperationAtomicity.obj : error LNK2001: 无法解析的外部符号 _nres_modsub
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _nres_modsub
+pointOperation.obj : error LNK2001: 无法解析的外部符号 _nres_modmult
+pointOperationAtomicity.obj : error LNK2001: 无法解析的外部符号 _nres_modmult
+preComputation.obj : error LNK2001: 无法解析的外部符号 _nres_modmult
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _nres_modmult
+scalarMultiplication.obj : error LNK2001: 无法解析的外部符号 _nres_moddiv
+G:\文章\2025\Eurocrypt\FullVersionAndCode\SupersingularityTestingCode\code\Debug\Supersingularity.exe : fatal error LNK1120: 69 个无法解析的外部命令

@@ -4,7 +4,7 @@ int scalarMultiplicationJ(affinePoint P, affinePoint &nP, int *item, int number,
 {
 	projectPoint P2;
 	P2.X=mirvar(0); P2.Y=mirvar(0);P2.Z=mirvar(1);
-		//projectPoint P3;
+	//projectPoint P3;
 	//P3.X=mirvar(0); P3.Y=mirvar(0);P3.Z=mirvar(1);
 	nres(P2.Z,P2.Z);
 	//Big X(0),Y(0),Z(0);
@@ -16,8 +16,7 @@ int scalarMultiplicationJ(affinePoint P, affinePoint &nP, int *item, int number,
 	negativeP.y=mirvar(0);
 	copy(P.x,negativeP.x);
 	nres_negate(P.y, negativeP.y);
-
-
+	
 	switch (Atomicity)
 	{
 	case 0:

@@ -1,4 +1,5 @@
 #include "scalarMultiplication.h"
+#include <vector>
 
 int scalarMultiplicationJ(affinePoint P, affinePoint &nP, int *item, int number, int Atomicity)
 {
@@ -914,211 +915,316 @@ int windowScalarMultiplicationEx(affinePoint P, affinePoint &nP, int *item, int 
 }
 
 
+
 int windowScalarMultiplicationEx(affinePoint P, affinePoint &nP, doubleBaseType *item, int number, extProjectPoint *Pre, int Cmax, int Atomicity)
-{
-	extProjectPoint P2;
-	P2.X = mirvar(0); P2.Y = mirvar(0); P2.Z = mirvar(1), P2.T = mirvar(1);
+{//2133 M
+	// number is the term count; exponents are nondecreasing in both bases.
+	if (!item || !Pre || !nP.x || !nP.y || number <= 0 || Cmax <= 0 ||
+		(Atomicity != 0 && Atomicity != 1))
+		return -1;
 
-	nres(P2.Z, P2.Z);
-
-	int index = item[number - 1].sign;
-	//P2=Pre[index]
-	if (index < 0)
+	// Validate every coefficient before using it as a precomputation index.
+	for (int i = 0; i < number; ++i)
 	{
-	
-		index = -index;
-		nres_negate(Pre[index].X, P2.X); //P2.X=P.x; 
-		copy(Pre[index].Y, P2.Y); //P2.Y=P.y;
-		nres_negate(Pre[index].Z, P2.Z); 				 //projectPoint P2;
-		copy(Pre[index].T, P2.T);
-
-	}
-	else
-	{
-		copy(Pre[index].X, P2.X); //P2.X=P.x; 
-		copy(Pre[index].Y, P2.Y); //P2.Y=P.y;
-		copy(Pre[index].Z, P2.Z); 				 //projectPoint P2;
-		copy(Pre[index].T, P2.T);
+		const int coefficient = item[i].sign;
+		if (coefficient == 0 || coefficient < -Cmax || coefficient > Cmax ||
+			coefficient % 2 == 0 || item[i].binaryExponent < 0 || item[i].ternaryExponent < 0)
+			return -1;
+		if (i > 0 && (item[i].binaryExponent < item[i - 1].binaryExponent ||
+			item[i].ternaryExponent < item[i - 1].ternaryExponent))
+			return -1;
+		const int index = coefficient < 0 ? -coefficient : coefficient;
+		if (!Pre[index].X || !Pre[index].Y || !Pre[index].Z || !Pre[index].T)
+			return -1;
 	}
 
-	extProjectPoint P1;
-	P1.X = mirvar(0); P1.Y = mirvar(0); P1.Z = mirvar(1), P1.T = mirvar(1);
-	copy(P.x, P1.X);
-	copy(P.y, P1.Y);
-	copy(P1.Z, P1.Z);
-	nres_modmult(P1.X, P1.Y, P1.T);
-	nres_moddiv(P1.T, P1.Z, P1.T);
-	//P1=affine(P)
-
-	extProjectPoint negativeP;
-	negativeP.X = mirvar(0);
-	negativeP.Y = mirvar(0);
-	negativeP.T = mirvar(0);
-	negativeP.Z = mirvar(1);
-	copy(P.x, negativeP.X);
-	copy(P.y, negativeP.Y);
-	nres_negate(negativeP.X, negativeP.X);
-	copy(negativeP.Z, negativeP.Z);
-	nres_modmult(negativeP.X, negativeP.Y, negativeP.T);
-	nres_moddiv(negativeP.T, negativeP.Z, negativeP.T);
-	nres_negate(negativeP.T, negativeP.T);
-	////affinePoint negativeP;
-	////negativeP.x=P.x;
-	////negativeP.y=(-P.y)%p;
-	big d = mirvar(0);
-	switch (Atomicity)
+	// Big owns the temporary storage; all coordinates remain in nres form.
+	Big coordinates[8];
+	extProjectPoint P2 = { coordinates[0].getbig(), coordinates[1].getbig(),
+		coordinates[2].getbig(), coordinates[3].getbig() };
+	extProjectPoint term = { coordinates[4].getbig(), coordinates[5].getbig(),
+		coordinates[6].getbig(), coordinates[7].getbig() };
+	Big d = 0; // These extended-coordinate formulas do not use d.
+	const auto loadTerm = [&](int coefficient, extProjectPoint &destination)
 	{
-	case 0:
-	if (number == 0)
+		const int index = coefficient < 0 ? -coefficient : coefficient;
+		copy(Pre[index].X, destination.X);
+		copy(Pre[index].Y, destination.Y);
+		copy(Pre[index].Z, destination.Z);
+		copy(Pre[index].T, destination.T);
+		if (coefficient < 0)
+		{
+			// -(X,Y,Z,T) = (-X,Y,Z,-T), preserving XY = ZT.
+			nres_negate(destination.X, destination.X);
+			nres_negate(destination.T, destination.T);
+		}
+	};
+	const auto scale = [&](int binaryExponent, int ternaryExponent)
 	{
-		for (int j = 0; j<item[0].binaryExponent; j++)
+		for (int j = 0; j < binaryExponent; ++j)
 		{
-			EdwardsDouble(P2, P2, d);
+			if (Atomicity == 0)
+				EdwardsDouble(P2, P2, d.getbig());
+			else
+				EdwardsDoubleAtomicity(P2, P2, d.getbig());
 		}
-		for (int j = 0; j<item[0].ternaryExponent; j++)
+		for (int j = 0; j < ternaryExponent; ++j)
 		{
-			EdwardsTriple(P2, P2, d);
+			if (Atomicity == 0)
+				EdwardsTriple(P2, P2, d.getbig());
+			else
+				EdwardsTripleAtomicity(P2, P2, d.getbig());
 		}
-	}
-	else
+	};
+
+	loadTerm(item[number - 1].sign, P2);
+	for (int i = number - 2; i >= 0; --i)
 	{
-		for (int j = 0; j<item[number].binaryExponent - item[number - 1].binaryExponent; j++)
+		scale(item[i + 1].binaryExponent - item[i].binaryExponent,
+			item[i + 1].ternaryExponent - item[i].ternaryExponent);
+		loadTerm(item[i].sign, term);
+		// The d-free addition formula is undefined for equal points.
+		Big leftX, rightX, leftY, rightY;
+		nres_modmult(P2.X, term.Z, leftX.getbig());
+		nres_modmult(term.X, P2.Z, rightX.getbig());
+		nres_modmult(P2.Y, term.Z, leftY.getbig());
+		nres_modmult(term.Y, P2.Z, rightY.getbig());
+		if (leftX == rightX && leftY == rightY)
 		{
-			EdwardsDouble(P2, P2, d);
+			scale(1, 0);
+			continue;
 		}
-		for (int j = 0; j<item[number].ternaryExponent - item[number - 1].ternaryExponent; j++)
-		{
-			EdwardsTriple(P2, P2, d);
-		}
-
-		for (int i = number - 1; i>0; i--)
-		{
-			if (item[i].sign > 0) //Cmax>=item[i].sign
-			{
-				EdwardsAddition(P2, P1, P2, d);
-			}
-			else if (item[i].sign < 0) //item[i].sign>=-Cmax
-			{
-				EdwardsAddition(P2, negativeP, P2, d);
-			}
-			for (int j = 0; j<item[i].binaryExponent - item[i - 1].binaryExponent; j++)
-			{
-				EdwardsDouble(P2, P2, d);
-			}
-			for (int j = 0; j<item[i].ternaryExponent - item[i - 1].ternaryExponent; j++)
-			{
-				EdwardsTriple(P2, P2, d);
-			}
-		}
-		if (item[0].sign >0)
-		{
-			EdwardsAddition(P2, P1, P2, d);
-		}
-		else if (item[0].sign <0)
-		{
-			EdwardsAddition(P2, negativeP, P2, d);
-		}
-		for (int j = 0; j<item[0].binaryExponent; j++)
-		{
-			EdwardsDouble(P2, P2, d);
-		}
-		for (int j = 0; j<item[0].ternaryExponent; j++)
-		{
-			EdwardsTriple(P2, P2, d);
-		}
-	}
-
-
-	break;
-	case 1:
-		if (number == 0)
-		{
-			for (int j = 0; j<item[0].binaryExponent; j++)
-			{
-				EdwardsDoubleAtomicity(P2, P2, d);
-			}
-			for (int j = 0; j<item[0].ternaryExponent; j++)
-			{
-				EdwardsTripleAtomicity(P2, P2, d);
-			}
-		}
+		if (Atomicity == 0)
+			EdwardsAddition(P2, term, P2, d.getbig());
 		else
-		{
-			for (int j = 0; j<item[number].binaryExponent - item[number - 1].binaryExponent; j++)
-			{
-				EdwardsDoubleAtomicity(P2, P2, d);
-			}
-			for (int j = 0; j<item[number].ternaryExponent - item[number - 1].ternaryExponent; j++)
-			{
-				EdwardsTripleAtomicity(P2, P2, d);
-			}
-
-			for (int i = number - 1; i>0; i--)
-			{
-				if (item[i].sign > 0) //Cmax>=item[i].sign
-				{
-					EdwardsAdditionAtomicity(P2, P1, P2, d);
-				}
-				else if (item[i].sign < 0) //item[i].sign>=-Cmax
-				{
-					EdwardsAdditionAtomicity(P2, negativeP, P2, d);
-				}
-				for (int j = 0; j<item[i].binaryExponent - item[i - 1].binaryExponent; j++)
-				{
-					EdwardsDoubleAtomicity(P2, P2, d);
-				}
-				for (int j = 0; j<item[i].ternaryExponent - item[i - 1].ternaryExponent; j++)
-				{
-					EdwardsTripleAtomicity(P2, P2, d);
-				}
-			}
-			if (item[0].sign >0)
-			{
-				EdwardsAdditionAtomicity(P2, P1, P2, d);
-			}
-			else if (item[0].sign <0)
-			{
-				EdwardsAdditionAtomicity(P2, negativeP, P2, d);
-			}
-			for (int j = 0; j<item[0].binaryExponent; j++)
-			{
-				EdwardsDoubleAtomicity(P2, P2, d);
-			}
-			for (int j = 0; j<item[0].ternaryExponent; j++)
-			{
-				EdwardsTripleAtomicity(P2, P2, d);
-			}
-		}
-		break;
-	default: cout << "error!" << endl;
+			EdwardsAdditionAtomicity(P2, term, P2, d.getbig());
 	}
-	big mid = mirvar(0);
-	big one = mirvar(1);
+	scale(item[0].binaryExponent, item[0].ternaryExponent);
 
-	//Big x=one; 
-
-	/*nres_modmult(P2.Z, P2.Z, mid);
-	nres_modmult(mid, P2.Z, mid);*/
-	//redc(mid, mid);
-	nres(one, one);
-	//x=mid;
-	//cout<<"Z^3:"<<x<<endl;
-	if (compare(P2.Z, one) != 0)
-	{
-		//nres(mid,mid);
-		nres_moddiv(one, P2.Z, mid);
-	}
-	//mid=inverse((P2.Z*P2.Z*P2.Z)%p);
-	nres_modmult(mid, P2.Y, nP.y);//nP.y=(mid*P2.Y)%p;
-	nres_modmult(mid, P2.X, nP.x);
-	//Big mid(0);
-	//mid=inverse((P2.Z*P2.Z*P2.Z)%p,p);
-	////	cout <<":" <<P2.X <<":"<<P2.Y <<":"<<P2.Z<<endl;
-	//nP.x=(mid*P2.X*P2.Z)%p;
-	//nP.y=(mid*P2.Y)%p;
-
+	if (size(P2.Z) == 0)
+		return -1; // The affine output cannot represent a point with Z == 0.
+	Big one = 1;
+	nres(one.getbig(), one.getbig());
+	Big inverseZ = one;
+	if (compare(P2.Z, one.getbig()) != 0 &&
+		nres_moddiv(one.getbig(), P2.Z, inverseZ.getbig()) != 1)
+		return -1;
+	nres_modmult(inverseZ.getbig(), P2.X, nP.x);
+	nres_modmult(inverseZ.getbig(), P2.Y, nP.y);
 	return 0;
 }
+
+//
+//int windowScalarMultiplicationEx(affinePoint P, affinePoint &nP, doubleBaseType *item, int number, extProjectPoint *Pre, int Cmax, int Atomicity)
+//{
+//	extProjectPoint P2;
+//
+//	big x= mirvar(0);
+//	big y = mirvar(0);
+//	big z = mirvar(1);
+//	big t = mirvar(1);
+//	P2.X = x; P2.Y = y; P2.Z = z, P2.T = t;
+//
+//	nres(P2.Z, P2.Z);
+//
+//	int index = item[number - 1].sign;
+//	//P2=Pre[index]
+//	if (index < 0)
+//	{
+//	
+//		index = -index;
+//		nres_negate(Pre[index].X, P2.X); //P2.X=P.x; 
+//		copy(Pre[index].Y, P2.Y); //P2.Y=P.y;
+//		nres_negate(Pre[index].Z, P2.Z); 				 //projectPoint P2;
+//		copy(Pre[index].T, P2.T);
+//
+//	}
+//	else
+//	{
+//		copy(Pre[index].X, P2.X); //P2.X=P.x; 
+//		copy(Pre[index].Y, P2.Y); //P2.Y=P.y;
+//		copy(Pre[index].Z, P2.Z); 				 //projectPoint P2;
+//		copy(Pre[index].T, P2.T);
+//	}
+//
+//	extProjectPoint P1;
+//	P1.X = mirvar(0); P1.Y = mirvar(0); P1.Z = mirvar(1), P1.T = mirvar(1);
+//	copy(P.x, P1.X);
+//	copy(P.y, P1.Y);
+//	copy(P1.Z, P1.Z);
+//	nres_modmult(P1.X, P1.Y, P1.T);
+//	nres_moddiv(P1.T, P1.Z, P1.T);
+//	//P1=affine(P)
+//
+//	extProjectPoint negativeP;
+//	negativeP.X = mirvar(0);
+//	negativeP.Y = mirvar(0);
+//	negativeP.T = mirvar(0);
+//	negativeP.Z = mirvar(1);
+//	copy(P.x, negativeP.X);
+//	copy(P.y, negativeP.Y);
+//	nres_negate(negativeP.X, negativeP.X);
+//	copy(negativeP.Z, negativeP.Z);
+//	nres_modmult(negativeP.X, negativeP.Y, negativeP.T);
+//	nres_moddiv(negativeP.T, negativeP.Z, negativeP.T);
+//	nres_negate(negativeP.T, negativeP.T);
+//	////affinePoint negativeP;
+//	////negativeP.x=P.x;
+//	////negativeP.y=(-P.y)%p;
+//	big d = mirvar(0);
+//	switch (Atomicity)
+//	{
+//	case 0:
+//	if (number == 0)
+//	{
+//		for (int j = 0; j<item[0].binaryExponent; j++)
+//		{
+//			EdwardsDouble(P2, P2, d);
+//		}
+//		for (int j = 0; j<item[0].ternaryExponent; j++)
+//		{
+//			EdwardsTriple(P2, P2, d);
+//		}
+//	}
+//	else
+//	{
+//		for (int j = 0; j<item[number].binaryExponent - item[number - 1].binaryExponent; j++)
+//		{
+//			EdwardsDouble(P2, P2, d);
+//		}
+//		for (int j = 0; j<item[number].ternaryExponent - item[number - 1].ternaryExponent; j++)
+//		{
+//			EdwardsTriple(P2, P2, d);
+//		}
+//
+//		for (int i = number - 1; i>0; i--)
+//		{
+//			if (item[i].sign > 0) //Cmax>=item[i].sign
+//			{
+//				EdwardsAddition(P2, P1, P2, d);
+//			}
+//			else if (item[i].sign < 0) //item[i].sign>=-Cmax
+//			{
+//				EdwardsAddition(P2, negativeP, P2, d);
+//			}
+//			for (int j = 0; j<item[i].binaryExponent - item[i - 1].binaryExponent; j++)
+//			{
+//				EdwardsDouble(P2, P2, d);
+//			}
+//			for (int j = 0; j<item[i].ternaryExponent - item[i - 1].ternaryExponent; j++)
+//			{
+//				EdwardsTriple(P2, P2, d);
+//			}
+//		}
+//		if (item[0].sign >0)
+//		{
+//			EdwardsAddition(P2, P1, P2, d);
+//		}
+//		else if (item[0].sign <0)
+//		{
+//			EdwardsAddition(P2, negativeP, P2, d);
+//		}
+//		for (int j = 0; j<item[0].binaryExponent; j++)
+//		{
+//			EdwardsDouble(P2, P2, d);
+//		}
+//		for (int j = 0; j<item[0].ternaryExponent; j++)
+//		{
+//			EdwardsTriple(P2, P2, d);
+//		}
+//	}
+//
+//
+//	break;
+//	case 1:
+//		if (number == 0)
+//		{
+//			for (int j = 0; j<item[0].binaryExponent; j++)
+//			{
+//				EdwardsDoubleAtomicity(P2, P2, d);
+//			}
+//			for (int j = 0; j<item[0].ternaryExponent; j++)
+//			{
+//				EdwardsTripleAtomicity(P2, P2, d);
+//			}
+//		}
+//		else
+//		{
+//			for (int j = 0; j<item[number].binaryExponent - item[number - 1].binaryExponent; j++)
+//			{
+//				EdwardsDoubleAtomicity(P2, P2, d);
+//			}
+//			for (int j = 0; j<item[number].ternaryExponent - item[number - 1].ternaryExponent; j++)
+//			{
+//				EdwardsTripleAtomicity(P2, P2, d);
+//			}
+//
+//			for (int i = number - 1; i>0; i--)
+//			{
+//				if (item[i].sign > 0) //Cmax>=item[i].sign
+//				{
+//					EdwardsAdditionAtomicity(P2, P1, P2, d);
+//				}
+//				else if (item[i].sign < 0) //item[i].sign>=-Cmax
+//				{
+//					EdwardsAdditionAtomicity(P2, negativeP, P2, d);
+//				}
+//				for (int j = 0; j<item[i].binaryExponent - item[i - 1].binaryExponent; j++)
+//				{
+//					EdwardsDoubleAtomicity(P2, P2, d);
+//				}
+//				for (int j = 0; j<item[i].ternaryExponent - item[i - 1].ternaryExponent; j++)
+//				{
+//					EdwardsTripleAtomicity(P2, P2, d);
+//				}
+//			}
+//			if (item[0].sign >0)
+//			{
+//				EdwardsAdditionAtomicity(P2, P1, P2, d);
+//			}
+//			else if (item[0].sign <0)
+//			{
+//				EdwardsAdditionAtomicity(P2, negativeP, P2, d);
+//			}
+//			for (int j = 0; j<item[0].binaryExponent; j++)
+//			{
+//				EdwardsDoubleAtomicity(P2, P2, d);
+//			}
+//			for (int j = 0; j<item[0].ternaryExponent; j++)
+//			{
+//				EdwardsTripleAtomicity(P2, P2, d);
+//			}
+//		}
+//		break;
+//	default: cout << "error!" << endl;
+//	}
+//	big mid = mirvar(0);
+//	big one = mirvar(1);
+//
+//	//Big x=one; 
+//
+//	/*nres_modmult(P2.Z, P2.Z, mid);
+//	nres_modmult(mid, P2.Z, mid);*/
+//	//redc(mid, mid);
+//	nres(one, one);
+//	//x=mid;
+//	//cout<<"Z^3:"<<x<<endl;
+//	if (compare(P2.Z, one) != 0)
+//	{
+//		//nres(mid,mid);
+//		nres_moddiv(one, P2.Z, mid);
+//	}
+//	//mid=inverse((P2.Z*P2.Z*P2.Z)%p);
+//	nres_modmult(mid, P2.Y, nP.y);//nP.y=(mid*P2.Y)%p;
+//	nres_modmult(mid, P2.X, nP.x);
+//	//Big mid(0);
+//	//mid=inverse((P2.Z*P2.Z*P2.Z)%p,p);
+//	////	cout <<":" <<P2.X <<":"<<P2.Y <<":"<<P2.Z<<endl;
+//	//nP.x=(mid*P2.X*P2.Z)%p;
+//	//nP.y=(mid*P2.Y)%p;
+//
+//	return 0;
+//}
 
 
 int windowScalarMultiplicationInvE(affinePoint P, affinePoint &nP, int *item, int number, projectPoint *Pre, int Cmax, int Atomicity)
@@ -1823,55 +1929,53 @@ int windowScalarMultiplicationD(affinePoint P, affinePoint &nP, doubleBaseType *
 
 
 int MontgomeryLadder(projectPoint P1, big number, projectPoint &Q, big ConstantA)
-{//Montgomery ladder on Montgomery curve
-	//P3=P2+P1
-	//\infinity:(1,0)
+{//X:Z Montgomery ladder; P3 = P2 + P1 throughout the loop.
+	// Copy the scalar: Big(big*) would take ownership of the caller's storage.
+	Big n = number;
+	if (n < 0)
+		return -1;
 
-	projectPoint P2;
-	P2.X = mirvar(0); P2.Y = mirvar(0); P2.Z = mirvar(1);
+	if (n == 0 || size(P1.Z) == 0 || (size(P1.X) == 0 && n % 2 == 0))
+	{
+		convert(1, Q.X);
+		nres(Q.X, Q.X);
+		zero(Q.Z);
+		return 0;
+	}
+	if (n == 1 || size(P1.X) == 0)
+	{
+		copy(P1.X, Q.X);
+		copy(P1.Z, Q.Z);
+		return 0;
+	}
+
+	// Big owns the temporary coordinates and releases them on every return.
+	Big coordinates[12];
+	projectPoint P2 = { coordinates[0].getbig(), coordinates[1].getbig(), coordinates[2].getbig() };
+	projectPoint P3 = { coordinates[3].getbig(), coordinates[4].getbig(), coordinates[5].getbig() };
+	projectPoint P4 = { coordinates[6].getbig(), coordinates[7].getbig(), coordinates[8].getbig() };
+	projectPoint P5 = { coordinates[9].getbig(), coordinates[10].getbig(), coordinates[11].getbig() };
 	copy(P1.X, P2.X);
-	copy(P1.Y, P2.Y);
 	copy(P1.Z, P2.Z);
-
-	projectPoint P3;
-	P3.X = mirvar(0); P3.Y = mirvar(0); P3.Z = mirvar(1);
 	MontgomeryLadderDoubleStep(P1, P3, ConstantA);
-	projectPoint P4;
-	P4.X = mirvar(0); P4.Y = mirvar(0); P4.Z = mirvar(1);
-	projectPoint P5;
-	P5.X = mirvar(0); P5.Y = mirvar(0); P5.Z = mirvar(1);
 
-	int item[810];
+	std::vector<int> item(bits(n));
 	int length;
-	Big n = &number;
-	binary(n, item, length);//n=item[i]*2^i
-
-
-	for (int i = length - 2; i > -1; i--)
+	binary(n, item.data(), length);
+	for (int i = length - 2; i >= 0; i--)
 	{
 		if (item[i] == 0)
-		{
 			MontgomeryLadderStep(P1, P2, P3, P4, P5, ConstantA);
-			//P2=P4
-			copy(P4.X, P2.X);
-			copy(P4.Z, P2.Z);
-			//P3=P5
-			copy(P5.X, P3.X);
-			copy(P5.Z, P3.Z);
-		}
-		else if (item[i] == 1)
-		{
+		else
 			MontgomeryLadderStep(P1, P3, P2, P5, P4, ConstantA);
-			//P2=P5
-			copy(P5.X, P2.X);
-			copy(P5.Z, P2.Z);
-			//P3=P4
-			copy(P4.X, P3.X);
-			copy(P4.Z, P3.Z);
-		}
+
+		// P4 is the new lower multiple, P5 the following multiple.
+		copy(P4.X, P2.X);
+		copy(P4.Z, P2.Z);
+		copy(P5.X, P3.X);
+		copy(P5.Z, P3.Z);
 	}
-	//Q=P4
-	copy(P4.X, Q.X);
-	copy(P4.Z, Q.Z);
+	copy(P2.X, Q.X);
+	copy(P2.Z, Q.Z);
 	return 0;
 }

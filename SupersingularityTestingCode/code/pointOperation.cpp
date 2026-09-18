@@ -1967,10 +1967,10 @@ int DIKNegative(extProjectPoint P1, extProjectPoint &P3)
 int MontgomeryLadderStep(projectPoint P1, projectPoint P2, projectPoint P3, projectPoint &P4, projectPoint &P5, big &ConstantA)
 {//P1=P3-P2=P5-P4,ConstantA=(A-2)/4
 	 
-	big A = mirvar(0), B = mirvar(0), C = mirvar(0), D = mirvar(0), E = mirvar(0), F = mirvar(0);
-	big a = mirvar(6), four = mirvar(4), eight = mirvar(8), sixteen = mirvar(16);//a=3a=3*2,is curve parameter
-	big G = mirvar(0), H = mirvar(0), I = mirvar(0), J = mirvar(0), K = mirvar(0), L = mirvar(0);
-	big E3 = mirvar(0), ZZZ2 = mirvar(0), ZZZ1 = mirvar(0), CC = mirvar(0), CC8 = mirvar(0), AA = mirvar(0);
+	Big temporaries[7];
+	big A = temporaries[0].getbig(), B = temporaries[1].getbig(), C = temporaries[2].getbig();
+	big D = temporaries[3].getbig(), E = temporaries[4].getbig(), F = temporaries[5].getbig();
+	big G = temporaries[6].getbig();
 	
 	nres_modadd(P2.X, P2.Z, C);//C=X2+Z2
 	nres_modsub(P2.X, P2.Z, D);//D=X2-Z2
@@ -2004,9 +2004,10 @@ int MontgomeryLadderStep(projectPoint P1, projectPoint P2, projectPoint P3, proj
 int MontgomeryLadderDoubleStep(projectPoint P2,  projectPoint &P4, big &ConstantA)
 {//P1=P3-P2=P5-P4,ConstantA=(A-2)/4
 
-	big A = mirvar(0), B = mirvar(0), C = mirvar(0), D = mirvar(0), E = mirvar(0), F = mirvar(0);
-	
-	big G = mirvar(0), H = mirvar(0), I = mirvar(0), J = mirvar(0), K = mirvar(0), L = mirvar(0);
+	Big temporaries[7];
+	big A = temporaries[0].getbig(), B = temporaries[1].getbig(), C = temporaries[2].getbig();
+	big D = temporaries[3].getbig(), E = temporaries[4].getbig(), F = temporaries[5].getbig();
+	big G = temporaries[6].getbig();
 	
 
 	nres_modadd(P2.X, P2.Z, C);//C=X2+Z2

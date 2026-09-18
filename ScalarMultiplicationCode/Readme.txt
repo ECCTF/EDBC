@@ -1,5 +1,5 @@
 This code is an implementation of scalar multiplication using NAF,wNAF,mbNAF,wmbNAF,greedy,tree, canonic DBC,  canonic EDBC, optimal DBC, optimal EDBC   for many coefficient set such as C^{\ast}={\pm 1, \pm 5\}$ and $C^{\ast}={\pm 1, \pm 3,\ldots,\pm C_{max}}$ with $1\le C_{max}\le 31$. It is compiled by by Microsoft visual studio 2015 on Win 10. One can generate MontgomeryModulus.exe to show the ratio of improvement of scalar multiplication using our optimal EDBC. 
-The code is shown in main.cpp, doublebasechain.cpp,  doublebasechain.h, preComputation.cpp, preComputation.h, pointOperation.cpp, pointOperation.h, scalarMultiplication.cpp, and scalarMultiplication.h.
+The code is shown in main.cpp, doublebasechain.cpp,  doublebasechain.h, preComputation.cpp, preComputation.h, pointOperation.cpp, pointOperation.h, scalarMultiplication.cpp, and scalarMultiplication.h. 
 
 Miracl lib  is used to implement  big number arithmetic. One should use the correct path of the miral.lib. Our experiments  are compiled  using C++.
 MontgomeryModulus.exe shows  the time cost of scalar multiplication  on Edwards curve with $a=-1$ using a combination of projective coordinates and extended coordinates.  Compared to scalar multiplication using NAF, our algorithm improves 20% on Edwards curve with $a=-1$ using a combination of projective coordinates and extended coordinates.   

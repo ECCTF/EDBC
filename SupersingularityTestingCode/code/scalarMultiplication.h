@@ -40,4 +40,6 @@ int windowScalarMultiplicationD(affinePoint P, affinePoint &nP, doubleBaseType *
 	extProjectPoint *Pre, int Cmax, int Atomicity = 0);
 
 
+// Compute X:Z only. The caller owns all inputs and output storage.
+// Return -1 for a negative scalar; otherwise return 0. Zero maps to infinity.
 int MontgomeryLadder(projectPoint P1, big number, projectPoint &Q, big ConstantA);

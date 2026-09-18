@@ -147,12 +147,12 @@ int ConstructEdwardsPoint(big A,  affinePoint &P)
 	big alpha = mirvar(0);
 	big beta = mirvar(0);
 
-	//y^2=x^3+ax^2+x
-	 
-
+	//y^2=x^3+Ax^2+x
+	//ax^2+y^2=1+dx^2y^2
+	//a=-1 //d=(A+2)/(2-A)
 	nres_modsub(two, A, A1);//A1=2-A
 	nres_modadd(A, two, A2);//A2=A+2
-	nres_moddiv(A2, A1, d);//d=A+2/2-A
+	nres_moddiv(A2, A1, d);//d=(A+2)/(2-A)
 
 	nres_modadd(a, d, B2);//B2=a+d
 	
@@ -288,7 +288,7 @@ int productTreeSupersingularityTesting(big A, int &isSupersingular)
 	projectPoint P[65];
 	for (int i = 0; i < 65; i++)
 	{
-		P[i].X = mirvar(1); P[i].Y = mirvar(0); P[i].Z = mirvar(0);
+		P[i].X = mirvar(1); P[i].Y = mirvar(1); P[i].Z = mirvar(0);
 	}
 
 	//Level 0
@@ -2729,7 +2729,166 @@ int Scalarmultiplication31to32(extProjectPoint P, extProjectPoint P1, extProject
 	return 0;
 }
 
-int newProductTree(big A, doubleBaseType DBCTerm[], int DBCLength, int &IsSupersingularity)
+
+
+
+
+
+
+int newProductTree(affinePoint P, big A, int &IsSupersingularity ,int &costInM)
+{
+
+	//construct a point on Edwards curve
+
+	IsSupersingularity = 1;
+	big A1 = mirvar(0);
+	big A2 = mirvar(0);
+	big d = mirvar(1);
+	big two = mirvar(2);
+	big one = mirvar(1);
+
+
+	//y^2=x^3+ax^2+x
+
+	nres_modsub(two, A, A1);//A1=2-A
+	nres_modadd(A, two, A2);//A2=A+2
+	nres_moddiv(A2, A1, d);//d=A+2/2-A
+
+
+	int l[74] = { 179, 239, 313, 337, 197, 251, 263, 347, 227, 257, 283, 293, 241, 233, 277, 311, 269, 317, 193, 223,
+		181, 211, 281, 353, 191, 229, 359, 349, 199, 271, 307, 331,	367, 373, 587, 173, 167, 163, 157, 151,
+		149, 139, 137, 131, 127, 113, 109, 107, 103, 101, 97, 89, 83, 79, 73, 71, 67, 61, 59, 53,
+		47, 43, 41, 37, 31, 29, 23, 19, 17, 13, 11, 7, 5, 3 };
+	Big n = 1;
+
+	for (int j = 32; j < 74; j++)
+	{
+		n = n*l[j];
+	}
+	n = n * 4;
+
+	//DBC Item[MatrixB][MatrixT][2 * Cmax];
+	DBCChainItem finalChain[MatrixB];
+	long long CPUcycles;
+	//DynamicProgrammingDBC(n, Item, finalChain, 7, 7, 7, 12, CPUcycles);
+
+	affinePoint P2;
+	doubleBaseType DBCTerm[300];
+	extProjectPoint PD[65];//P[i]=iP for i\in I_w
+	projectPoint Pre[65];
+	projectPoint P1[2];
+
+
+	big X1[2];
+	big Y1[2];
+	big Z1[2];
+	for (int i = 0; i < 2; i++)
+	{
+		X1[i] = mirvar(0);
+		P1[i].X = X1[i];
+		Y1[i] = mirvar(0);
+		P1[i].Y = Y1[i];
+		Z1[i] = mirvar(1);
+		P1[i].Z = Z1[i];
+
+	}
+
+	P2.x = mirvar(2);
+	P2.y = mirvar(5);
+	copy(P.x, P2.x);
+	copy(P.y, P2.y);
+	nres(P2.x, P2.x);
+	nres(P2.y, P2.y);
+	affinePoint P4;
+	P4.x = mirvar(2);
+	P4.y = mirvar(5);
+	int DBCLength;
+	big X[65];
+	big Y[65];
+	big Z[65];
+	big T[65];
+	for (int i = 0; i < 65; i++)
+	{
+		X[i] = mirvar(0);
+		PD[i].X = X[i];
+		Y[i] = mirvar(0);
+		PD[i].Y = Y[i];
+		Z[i] = mirvar(1);
+		PD[i].Z = Z[i];
+		T[i] = mirvar(1);
+		PD[i].T = T[i];
+	}
+
+	preComputationEx(P2, PD, CPUcycles, 7, d);
+	windowScalarMultiplicationEx(P2, P4, DBCTerm, DBCLength, PD, 7);//(p+1)/l_1...l_32 //2133 M
+																	//Scalar512Multiplication1to32(P2, P4);	 
+	copy(P4.x, PD[0].X);
+	copy(P4.y, PD[0].Y);
+	nres_modmult(PD[0].X, PD[0].X, PD[0].T);
+	copy(one, PD[0].Z);
+	Scalarmultiplication1to32(PD[0], PD[2], PD[3], d);//1198+258 M
+	Scalarmultiplication1to16(PD[2], PD[4], PD[5], d);//599+126 M
+	Scalarmultiplication17to32(PD[3], PD[6], PD[7], d);//604+170 M
+
+	Scalarmultiplication1to8(PD[4], PD[8], PD[9], d); //285+17 M
+	Scalarmultiplication9to16(PD[5], PD[10], PD[11], d); //286+38 M
+	Scalarmultiplication17to24(PD[6], PD[12], PD[13], d); //288+62 M
+	Scalarmultiplication25to32(PD[7], PD[14], PD[15], d); //293+0 M
+
+	Scalarmultiplication1to4(PD[8], PD[16], PD[17], d); //147+42 M
+	Scalarmultiplication5to8(PD[9], PD[18], PD[19], d); //156+34 M
+	Scalarmultiplication9to12(PD[10], PD[20], PD[21], d); //165+0 M
+	Scalarmultiplication13to16(PD[11], PD[22], PD[23], d); //140+36 M
+	Scalarmultiplication17to20(PD[12], PD[24], PD[25], d); //171+0 M
+	Scalarmultiplication21to24(PD[13], PD[26], PD[27], d); //198+42 M
+	Scalarmultiplication25to28(PD[14], PD[28], PD[29], d); //130+69 M
+	Scalarmultiplication29to32(PD[15], PD[30], PD[31], d); //155+25 M
+
+	Scalarmultiplication1to2(PD[16], PD[32], PD[33], d); //72+9 M
+	Scalarmultiplication3to4(PD[17], PD[34], PD[35], d); //77+8 M
+	Scalarmultiplication5to6(PD[18], PD[36], PD[37], d); //75+10 M
+	Scalarmultiplication7to8(PD[19], PD[38], PD[39], d); //77+19 M
+	Scalarmultiplication9to10(PD[20], PD[40], PD[41], d); //83+0 M
+	Scalarmultiplication11to12(PD[21], PD[42], PD[43], d); //77+8 M
+	Scalarmultiplication13to14(PD[22], PD[44], PD[45], d); //76+10 M
+	Scalarmultiplication15to16(PD[23], PD[46], PD[47], d); //77+17 M
+	Scalarmultiplication17to18(PD[24], PD[48], PD[49], d); //83+17 M
+	Scalarmultiplication19to20(PD[25], PD[50], PD[51], d); //63+17 M
+	Scalarmultiplication21to22(PD[26], PD[52], PD[53], d); //72+17 M
+	Scalarmultiplication23to24(PD[27], PD[54], PD[55], d); //77+9 M
+	Scalarmultiplication25to26(PD[28], PD[56], PD[57], d); //63+26 M
+	Scalarmultiplication27to28(PD[29], PD[58], PD[59], d); //77+17 M
+	Scalarmultiplication29to30(PD[30], PD[60], PD[61], d); //75+10 M
+	Scalarmultiplication31to32(PD[31], PD[62], PD[63], d); //88+9 M
+
+
+	costInM = 9240;
+
+
+	for (int i = 32; i < 64; i++)
+	{
+		if (PD[i].Z == 0)
+		{
+			IsSupersingularity = 0;
+			return -1;
+		}
+	}
+	Big number = 179;
+	copy(PD[32].X, P1[1].X);
+	copy(PD[32].Y, P1[1].Y);
+	copy(PD[32].Z, P1[1].Z);
+	MontgomeryLadder(P1[1], number.getbig(), P1[0], d);
+
+	if (PD[0].Z != 0)
+	{
+		IsSupersingularity = 0;
+		return -1;
+	}
+
+	return 1;
+}
+
+int newProductTree(big A, int &IsSupersingularity)
 {
 	affinePoint P;
 	P.x = mirvar(1); P.y = mirvar(1);
@@ -2766,15 +2925,15 @@ int newProductTree(big A, doubleBaseType DBCTerm[], int DBCLength, int &IsSupers
 	//DBC Item[MatrixB][MatrixT][2 * Cmax];
 	DBCChainItem finalChain[MatrixB];
 	long long CPUcycles;
-
+	//DynamicProgrammingDBC(n, Item, finalChain, 7, 7, 7, 12, CPUcycles);
 
 	affinePoint P2;
-	
+	doubleBaseType DBCTerm[300];
 	extProjectPoint PD[65];//P[i]=iP for i\in I_w
 	projectPoint Pre[65];
 	projectPoint P1[2];
 	
-	 
+
 	big X1[2];
 	big Y1[2];
 	big Z1[2];
@@ -2798,7 +2957,7 @@ int newProductTree(big A, doubleBaseType DBCTerm[], int DBCLength, int &IsSupers
 	affinePoint P4;
 	P4.x = mirvar(2);
 	P4.y = mirvar(5);
-	
+	int DBCLength;
 	big X[65];
 	big Y[65];
 	big Z[65];
@@ -2816,67 +2975,64 @@ int newProductTree(big A, doubleBaseType DBCTerm[], int DBCLength, int &IsSupers
 	}
 
 	preComputationEx(P2, PD, CPUcycles, 7, d);
-	windowScalarMultiplicationEx(P2, P4, DBCTerm, DBCLength, PD, 7);//(p+1)/l_1...l_32
+	windowScalarMultiplicationEx(P2, P4, DBCTerm, DBCLength, PD, 7);//(p+1)/l_1...l_32 //2133 M
 	//Scalar512Multiplication1to32(P2, P4);	 
 	copy(P4.x,PD[0].X);
 	copy(P4.y, PD[0].Y);
 	nres_modmult(PD[0].X, PD[0].X, PD[0].T);
 	copy(one, PD[0].Z);
-	Scalarmultiplication1to32(PD[0],PD[2],PD[3],d);
-	Scalarmultiplication1to16(PD[2], PD[4], PD[5], d);
-	Scalarmultiplication17to32(PD[3], PD[6], PD[7], d);
+	Scalarmultiplication1to32(PD[0],PD[2],PD[3],d);//1198+258 M
+	Scalarmultiplication1to16(PD[2], PD[4], PD[5], d);//599+126 M
+	Scalarmultiplication17to32(PD[3], PD[6], PD[7], d);//604+170 M
 
-	Scalarmultiplication1to8(PD[4], PD[8], PD[9], d);
-	Scalarmultiplication9to16(PD[5], PD[10], PD[11], d);
-	Scalarmultiplication17to24(PD[6], PD[12], PD[13], d);
-	Scalarmultiplication25to32(PD[7], PD[14], PD[15], d);
+	Scalarmultiplication1to8(PD[4], PD[8], PD[9], d); //285+17 M
+	Scalarmultiplication9to16(PD[5], PD[10], PD[11], d); //286+38 M
+	Scalarmultiplication17to24(PD[6], PD[12], PD[13], d); //288+62 M
+	Scalarmultiplication25to32(PD[7], PD[14], PD[15], d); //293+0 M
 
-	Scalarmultiplication1to4(PD[8], PD[16], PD[17], d);
-	Scalarmultiplication5to8(PD[9], PD[18], PD[19], d);
-	Scalarmultiplication9to12(PD[10], PD[20], PD[21], d);
-	Scalarmultiplication13to16(PD[11], PD[22], PD[23], d);
-	Scalarmultiplication17to20(PD[12], PD[24], PD[25], d);
-	Scalarmultiplication21to24(PD[13], PD[26], PD[27], d);
-	Scalarmultiplication25to28(PD[14], PD[28], PD[29], d);
-	Scalarmultiplication29to32(PD[15], PD[30], PD[31], d);
+	Scalarmultiplication1to4(PD[8], PD[16], PD[17], d); //147+42 M
+	Scalarmultiplication5to8(PD[9], PD[18], PD[19], d); //156+34 M
+	Scalarmultiplication9to12(PD[10], PD[20], PD[21], d); //165+0 M
+	Scalarmultiplication13to16(PD[11], PD[22], PD[23], d); //140+36 M
+	Scalarmultiplication17to20(PD[12], PD[24], PD[25], d); //171+0 M
+	Scalarmultiplication21to24(PD[13], PD[26], PD[27], d); //198+42 M
+	Scalarmultiplication25to28(PD[14], PD[28], PD[29], d); //130+69 M
+	Scalarmultiplication29to32(PD[15], PD[30], PD[31], d); //155+25 M
 
-	Scalarmultiplication1to2(PD[16], PD[32], PD[33], d);
-	Scalarmultiplication3to4(PD[17], PD[34], PD[35], d);
-	Scalarmultiplication5to6(PD[18], PD[36], PD[37], d);
-	Scalarmultiplication7to8(PD[19], PD[38], PD[39], d);
-	Scalarmultiplication9to10(PD[20], PD[40], PD[41], d);
-	Scalarmultiplication11to12(PD[21], PD[42], PD[43], d);
-	Scalarmultiplication13to14(PD[22], PD[44], PD[45], d);
-	Scalarmultiplication15to16(PD[23], PD[46], PD[47], d);
-	Scalarmultiplication17to18(PD[24], PD[48], PD[49], d);
-	Scalarmultiplication19to20(PD[25], PD[50], PD[51], d);
-	Scalarmultiplication21to22(PD[26], PD[52], PD[53], d);
-	Scalarmultiplication23to24(PD[27], PD[54], PD[55], d);
-	Scalarmultiplication25to26(PD[28], PD[56], PD[57], d);
-	Scalarmultiplication27to28(PD[29], PD[58], PD[59], d);
-	Scalarmultiplication29to30(PD[30], PD[60], PD[61], d);
-	Scalarmultiplication31to32(PD[31], PD[62], PD[63], d);
+	Scalarmultiplication1to2(PD[16], PD[32], PD[33], d); //72+9 M
+	Scalarmultiplication3to4(PD[17], PD[34], PD[35], d); //77+8 M
+	Scalarmultiplication5to6(PD[18], PD[36], PD[37], d); //75+10 M
+	Scalarmultiplication7to8(PD[19], PD[38], PD[39], d); //77+19 M
+	Scalarmultiplication9to10(PD[20], PD[40], PD[41], d); //83+0 M
+	Scalarmultiplication11to12(PD[21], PD[42], PD[43], d); //77+8 M
+	Scalarmultiplication13to14(PD[22], PD[44], PD[45], d); //76+10 M
+	Scalarmultiplication15to16(PD[23], PD[46], PD[47], d); //77+17 M
+	Scalarmultiplication17to18(PD[24], PD[48], PD[49], d); //83+17 M
+	Scalarmultiplication19to20(PD[25], PD[50], PD[51], d); //63+17 M
+	Scalarmultiplication21to22(PD[26], PD[52], PD[53], d); //72+17 M
+	Scalarmultiplication23to24(PD[27], PD[54], PD[55], d); //77+9 M
+	Scalarmultiplication25to26(PD[28], PD[56], PD[57], d); //63+26 M
+	Scalarmultiplication27to28(PD[29], PD[58], PD[59], d); //77+17 M
+	Scalarmultiplication29to30(PD[30], PD[60], PD[61], d); //75+10 M
+	Scalarmultiplication31to32(PD[31], PD[62], PD[63], d); //88+9 M
 
-	Big number = 1;
+
 
 	for (int i = 32; i < 64; i++)
 	{
-		number = PD[i].Z;
-
-		if (number == 0)
+		if (PD[i].Z == 0)
 		{
 			IsSupersingularity = 0;
 			return -1;
 		}
 	}
-	number = 179;
+	Big number = 179;
 	copy(PD[32].X, P1[1].X);
 	copy(PD[32].Y, P1[1].Y);
 	copy(PD[32].Z, P1[1].Z);
 	MontgomeryLadder(P1[1], number.getbig(), P1[0], d);
 
-	number = PD[0].Z;
-	if (number != 0)
+	if (PD[0].Z != 0)
 	{
 		IsSupersingularity = 0;
 		return -1;

@@ -96,8 +96,7 @@ int main()
 
 	/*n = 29 * 61 * 67 * 127;
 	n = n * 97 * 131;*/
-	/*n = n * 71;
-	n = n * 227 * 229;*/
+ 
 	double costFinal = Infinite;
 	double mA = 6;
 	double A = 7;
@@ -189,8 +188,6 @@ int main()
 		cout << endl;
 		cout << "Please input a positive integer(less than 256 bit)." << endl;
 	}
-
-
 
 	return 0;
 }

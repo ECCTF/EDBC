@@ -64,7 +64,6 @@
 //}
 
 
-
 int preComputationW(affinePoint P1, projectPoint *P, long long &CPUcycles, int Cmax)
 {//P[i]=i*P, a=-3
 	

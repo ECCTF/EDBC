@@ -115,12 +115,12 @@ int main()
 	//Big n = 1;
 
 	n = 1;
-	for (int j = 33; j < 74; j++)
+	for (int j = 0; j < 74; j++)
 	{
 		n = n*l[j];
 	}
 	n = n * 4;
-	//n = n - 1;
+	n = n - 1;
 	//n = n + 1;
 	//n = n / 4;
 	//mip->IOBASE = 10;
@@ -135,7 +135,7 @@ int main()
 	//mip->IOBASE =10;
 	Big out = 0;
 	big p = mirvar(0);
-	copy(ECC25519.getbig(), p);
+	copy(n.getbig(), p);
 
 	big x = mirvar(1);
 	big y = mirvar(1);
@@ -187,53 +187,63 @@ int main()
 	big one = mirvar(1);
 	mip->IOBASE = 10;
 	int PINAFLength = 0;
+	affinePoint PE;
+	PE.x = mirvar(1); PE.y = mirvar(1);
+	
  
 	long long CPUcycles;
 	int IsSupersingularity;
-	big A = mirvar(2);
-	//productTree(A, IsSupersingularity);
+	big A = mirvar(2111);
 
+	Big ABig("20");
+	srand(time(NULL));
 
-
-	doubleBaseType DBCTerm[300];
-	int DBCLength;
-
-	DBC Item[MatrixB][MatrixT][2 * Cmax];
-	DBC Item0[MatrixB][MatrixT][2];
-	DBCChainItem finalChain[MatrixB];
-	DBC DBCfinal;
-	double mAcost = 6;
-	double Acost = 7;
-	double SMRatio = 0.67;
-	double Dcost = 3 + 4 * SMRatio;
-	double Tcost = 9 + 3 * SMRatio;
-	//int IsSupersingularity = 0;
-
-	//newProductTree(n.getbig(), IsSupersingularity);
-
-	n = 1;
-
-	for (int j = 32; j < 74; j++)
-	{
-		n = n*l[j];
-	}
-	n = n * 4;
-	DBCfinal = DynamicProgrammingDBC(n, Item, finalChain, mAcost, Acost, Dcost, Tcost, CPUcycles);
-
-	int DBClength=DBCfinal.HammingWeight;
-
-	assignment(finalChain, DBCLength, DBCTerm);
-	newProductTree(A, DBCTerm, DBClength,IsSupersingularity);
-	//pairingMontgomeryLadder(A, IsSupersingularity);
-	if (IsSupersingularity < 1)
-	{
-		cout << "NonSupersingular!" << endl;
-	}
-	else
-	{
-		cout << "Supersingular!" << endl;
-	}
 
 	
+
+	big A1 = mirvar(0);
+	big A2 = mirvar(0);
+	big two = mirvar(2);
+
+	ABig = (rand() % 65536)*(rand() % 65536);
+
+	int calculateNumber = 0;
+	do
+	{
+		A = ABig.getbig();
+		ConstructEdwardsPoint(A, PE);
+		nres_modsub(two, A, A1);//A1=2-A
+		nres_modadd(A, two, A2);//A2=A+2
+		nres_moddiv(A2, A1, d);//d=(A+2)/(2-A)
+
+		int costInM = 0;
+		//productTree(A, IsSupersingularity);
+		//newProductTree(A, IsSupersingularity);
+		newProductTree(PE, d, IsSupersingularity, costInM);
+
+		if (calculateNumber++ == 0)
+		{
+			cout << "Method:" << "random point[19]" << " requires " << "168960" << "M" << endl;
+			cout << "Method:" << "product tree[4]" << " requires " << "14680" << "M" << endl;
+			cout << "Method:" << "Sutherland[42,62]" << " requires " << "-" << "M" << endl;
+			cout << "Method:" << "Doliskani[36]" << " requires " << "13781" << "M" << endl;
+			cout << "Method:" << "pairing[15,57]" << " requires " << "12642" << "M" << endl;
+			cout << "Method:" << "pairing[56]" << " requires " << "11954" << "M" << endl;
+			cout << "Method:" << "doube-base product tree(this work)" << " requires " << costInM << "M" << endl;
+		}
+
+		cout << "The curve with  A value: " << ABig << " is ";
+		if (IsSupersingularity < 1)
+		{
+			cout << "NonSupersingular!" << endl;
+		}
+		else
+		{
+			cout << "Supersingular!" << endl;
+		}
+	} 
+	while (cin >> ABig);
+		 
+ 
 	return 0;
 }

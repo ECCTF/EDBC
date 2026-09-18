@@ -1,5 +1,3 @@
-
-
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -10,7 +8,6 @@
 #include "scalarMultiplication.h"
 
 using namespace std;
-
 
 miracl *mip;
 
